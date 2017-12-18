@@ -1,0 +1,108 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.9.RELEASE'
+		cfAppVersion = '2.0.0-RC1'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://oss.sonatype.org/content/repositories/releases" }
+		maven { url "https://repo.spring.io/release" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("com.github.pivotalservices:ya-cf-app-gradle-plugin:${cfAppVersion}")
+	}
+}
+
+apply plugin: 'cf-app'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+group = 'io.pivotal'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+project.tasks.withType(JavaCompile) {
+    options.fork = true
+    options.compilerArgs << '-parameters'
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
+
+configurations {
+    instrument { 
+        description 'classpath for instrument as java agent' 
+    }
+}
+
+cfConfig {
+	//CF Details
+	ccHost = "api.local.pcfdev.io"
+	ccUser = "admin"
+	ccPassword = "admin"
+	org = "pcfdev-org"
+	space = "pcfdev-space"
+
+	//App Details
+	name = "track-shipments"
+	host = "track-shipments"
+	filePath = "build/libs/track-shipments-${version}.jar"
+	path = ""
+	domain = "local.pcfdev.io"
+	instances = 1
+	memory = 1024
+
+	//Env and services
+	buildpack = "java_buildpack_offline"
+	environment = ["JAVA_OPTS": "-Djava.security.egd=file:/dev/./urandom", "SPRING_PROFILES_ACTIVE": "cloud"]
+}
+
+dependencies {
+	compile('org.apache.commons:commons-lang3:3.7')
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa') { exclude module: 'hibernate-entitymanager' }
+	compile('org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.0')
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	compile('org.springframework.data:spring-data-rest-hal-browser')
+	compile('org.springframework.boot:spring-boot-starter-hateoas')
+	//compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('com.fasterxml.uuid:java-uuid-generator:3.1.4')
+	compile('com.google.guava:guava:20.0')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	runtime('com.h2database:h2')
+	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+	compileOnly('org.projectlombok:lombok')
+	instrument('org.springframework:spring-instrument')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	//testCompile('org.springframework.security:spring-security-test')
+}
+
+test { jvmArgs "-javaagent:$project.configurations.instrument.singleFile" }
+
+bootRun {
+    jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
+    systemProperties = System.properties
+}
+
+task copySpringInstrumentJar (type:Copy) {
+    description = 'Copies the spring-instrument.jar into your lib directory.'
+    outputs.file project.file('lib/spring-instrument.jar')
+    from (project.configurations.instrument)
+    into("lib")
+    rename { String filename -> filename = 'spring-instrument.jar' }
+}
+
+tasks.idea.dependsOn(project.tasks.copySpringInstrumentJar)
+tasks.eclipse.dependsOn(project.tasks.copySpringInstrumentJar)
+tasks.processResources.dependsOn(project.tasks.copySpringInstrumentJar)

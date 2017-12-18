@@ -1,0 +1,36 @@
+{
+    "messages": ["No way to determine proper status at this point in processing"
+    	],
+    "carrier": "starbucks",
+    "tracking_number": "TEST_SBUX_UNKNOWN",
+    "address_from": {
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94103",
+        "country": "US"
+    },
+    "address_to": {
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60611",
+        "country": "US"
+    },
+    "eta": "2017-10-20T04:30:22.803",
+    "original_eta": "2017-10-17T19:54:55.576",
+    "service_level": {
+        "token": "starbucks_priority",
+        "name": "Priority Mail"
+    },
+    "metadata": "Starbucks test tracking",
+    "tracking_status": {
+        "status": "UNKNOWN",
+        "status_details": "The carrier has received the electronic shipment information.",
+        "status_date": "2017-10-12T17:49:55.578",
+        "location": {
+            "city": "San Francisco",
+            "state": "CA",
+            "zip": "94103",
+            "country": "US"
+        }
+    }
+}
