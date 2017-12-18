@@ -9,7 +9,8 @@ before_cache:
 cache:
   directories:
   - "$HOME/.gradle/caches/"
-  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.gradle/wrapper/" 
+  
 deploy:
   provider: cloudfoundry
   username: ci-daemon
@@ -18,3 +19,7 @@ deploy:
   api: https://api.sys.cf.az.clue2solve.com --skip-ssl-validation
   organization: scm
   space: test
+
+branches:
+  only: 
+    - master
