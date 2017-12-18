@@ -21,3 +21,9 @@ logging:
 management:
   security:
     enabled: false
+  info:
+    git:
+      mode: full
+  cloudfoundry:
+    enabled: true
+    skip-ssl-validation: true
