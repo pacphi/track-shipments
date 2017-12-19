@@ -1,5 +1,7 @@
 # Track Shipments Sample
 
+[![Build Status](https://travis-ci.org/pacphi/track-shipments.svg?branch=master)](https://travis-ci.org/pacphi/track-shipments) [![Known Vulnerabilities](https://snyk.io/test/github/pacphi/track-shipments/badge.svg)](https://snyk.io/test/github/pacphi/track-shipments)
+
 This is a [Spring Boot](http://projects.spring.io/spring-boot/) application for demonstration purposes.
 
 ## Prerequisites
@@ -87,6 +89,18 @@ GET /shipments/{tracking_number}/addressFrom
 GET /shipments/{tracking_number}/addressTo
 ```
 
+## Scripts
+
+Found in the `/scripts` directory
+
+| Script   |  Description |
+|---|---|
+| create-environments.sh  | Creates accounts, org, and spaces.  |
+| destroy-environments.sh | Deletes accounts, org, and spaces that were created. |
+| deploy-to-multiple-environments.sh | Executes a gradle cf-push with an account to org and spaces (as configured). |
+| deploy-to-staging.sh  | Executes a gradle cf-push with an account to staging environment (org/space).   |
+
+ 
 ## Load testing
 
 1. Sign up for an account on [loader.io](https://loader.io).
