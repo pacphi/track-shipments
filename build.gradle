@@ -96,7 +96,9 @@ dependencies {
 	//testCompile('org.springframework.security:spring-security-test')
 }
 
-test { jvmArgs "-javaagent:$project.configurations.instrument.singleFile" }
+test { 
+    jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
+}
 
 bootRun {
     jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
