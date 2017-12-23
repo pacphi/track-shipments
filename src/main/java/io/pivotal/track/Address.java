@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.annotations.Indexes;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -21,6 +24,11 @@ import lombok.Setter;
 
 @Entity
 @Table(name="address")
+@Indexes({
+    @Index(name="by_city", columnNames= { "city" }),
+    @Index(name="by_state", columnNames= { "state" }),
+    @Index(name="by_zip", columnNames= { "zip" })
+})
 @NoArgsConstructor(access=PRIVATE)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({

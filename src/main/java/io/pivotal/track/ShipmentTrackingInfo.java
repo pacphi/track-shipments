@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.Index;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -22,6 +24,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="shipment_tracking_info")
+@Index(name="by_tracking_number", columnNames= { "tracking_number" })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "carrier",

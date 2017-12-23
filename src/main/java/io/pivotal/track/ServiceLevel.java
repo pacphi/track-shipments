@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.Index;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -20,6 +22,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="service_level")
+@Index(name="by_token", columnNames = { "token" })
 @NoArgsConstructor(access=PRIVATE)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
