@@ -13,12 +13,11 @@ cache:
   
 deploy:
   provider: cloudfoundry
-  username: ci-daemon
-  password:
-    secure: j2/q0/bpfasTVJyhD5m48Wifieb37n54wN/JGE3O2wQAVoJ0cf0Hl6vjvcdfrKeJSMskvrSJaykJykzsg6adJa/Buv1tbbuIB6o4q9yz46YyNFgFHFDMKO9EaHaO2OKGXjCcx/DAnboZhJpvLq78pA34Q5hQD38p02GSPuZbN9RN9S+dITNDR2Av9Znx2UU9NlEaFRgJYLAoOYfP3oaXXrV7+u2qt5zwgW6nxyti9wjVAMS8Whi5aNnZc/By+YUvr5o4IWCoRcFKsn43TxiU5In+g7rRPVPPeBRTalkQP+/2kSdyyn/+c5325DTX3Ec98TDt7UWZnEsi1JMvof0LS2orFmlYjpI+iH1TL7bhvHXADHkWyYOfEzy6qn/a4kpGoebPyKI4Hj8EbDhaHy3M8yB1+vb5gCqZ0OiWXlGL/hPD02tPOCVsWUyzwBbvTuKYsZAjQrTFyfv6jBydEnh3Ao902b82bVoBeQAugjwUlf5KJpa6eEWfYch2/Z1S5Kmx4OQwY9Uww027jmC52tFZtxInScXb5LGvD3aoUNpWcKtT7vkndVSc5ztJk3S0JrD8joppQhe0ZJoMbrsptCYFfF1gXuOIqXbiJLufgDBPkKQ6XKVBZIXDdgd7TtHbvrnx6lsW1Idyz98LmDe7B6AdzGe38yrjff3g6Yv85UpATts=
-  api: https://api.sys.cf.az.clue2solve.com --skip-ssl-validation
-  organization: scm
-  space: test
+  username: $CF_ACCOUNT_USERNAME
+  password: $CF_ACCOUNT_PASSWORD
+  api: $CF_API
+  organization: $CF_ORGANIZATION
+  space: $CF_SPACE
 
 branches:
   only: 
