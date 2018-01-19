@@ -32,6 +32,7 @@ import lombok.Setter;
 @NoArgsConstructor(access=PRIVATE)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
+    "streetAddress",
     "city",
     "state",
     "zip",
@@ -48,6 +49,12 @@ public class Address implements Serializable {
     @Setter(PACKAGE)
     @JsonProperty(value="id", access=JsonProperty.Access.READ_ONLY)
     private Long id;
+    
+    @Column(name="streetAddress",length=250)
+    @Getter
+    @Setter
+    @JsonProperty("streetAddress")
+    private String streetAddress;
     
     @Column(name="city",length=50)
     @Getter
@@ -72,6 +79,11 @@ public class Address implements Serializable {
     @Setter
     @JsonProperty("country")
     private String country;
+    
+    public Address withStreetAddress(String streetAddress) {
+        setStreetAddress(streetAddress);
+        return this;
+    }
     
     public Address withCity(String city) {
         setCity(city);
