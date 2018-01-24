@@ -48,6 +48,9 @@ test {
 }
 
 configurations {
+	all {
+    		exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+	}
     instrument { 
         description 'classpath for instrument as java agent' 
     }
@@ -83,6 +86,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.data:spring-data-rest-hal-browser')
 	compile('org.springframework.boot:spring-boot-starter-hateoas')
+	compile('org.springframework.boot:spring-boot-starter-log4j2')
 	//compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('com.fasterxml.uuid:java-uuid-generator:3.1.4')
