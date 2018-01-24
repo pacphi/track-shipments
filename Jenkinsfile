@@ -1,5 +1,5 @@
 node {
-    def server = Artifactory.server "artifactory-local"
+    def server = Artifactory.server "artifactory"
     def rtGradle = Artifactory.newGradleBuild()
 
     stage 'Clone'
