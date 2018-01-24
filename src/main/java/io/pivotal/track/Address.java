@@ -25,6 +25,7 @@ import lombok.Setter;
 @Entity
 @Table(name="address")
 @Indexes({
+    @Index(name="by_streetAddress", columnNames= { "streetAddress" }),
     @Index(name="by_city", columnNames= { "city" }),
     @Index(name="by_state", columnNames= { "state" }),
     @Index(name="by_zip", columnNames= { "zip" })
