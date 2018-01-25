@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '1.5.9.RELEASE'
-		cfAppVersion = '2.0.0-RC1'
+		cfAppVersion = '2.1.0'
 	}
 	repositories {
 		mavenCentral()
@@ -10,14 +10,19 @@ buildscript {
 		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
+      	classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1")
 		classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.17")
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("com.github.pivotalservices:ya-cf-app-gradle-plugin:${cfAppVersion}")
 	}
 }
 
+
+
 apply plugin: 'cf-app'
 apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'org.sonarqube'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -30,6 +35,30 @@ sourceCompatibility = 1.8
 gitProperties {
     dateFormat = "yyyy-MM-dd'T'HH:mmZ"
     dateFormatTimeZone = "UTC"
+}
+
+jacoco {
+    toolVersion = "0.8.0"
+}
+
+
+jacocoTestReport {
+	reports {
+	    xml.enabled = true
+	    html.enabled = true
+	    csv.enabled = false
+    }
+}
+
+
+check.dependsOn jacocoTestReport
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Track Shipments"
+        property "sonar.projectKey", "io.pivotal:track-shipments"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    }
 }
 
 repositories {
