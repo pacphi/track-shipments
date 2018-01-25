@@ -16,21 +16,17 @@ pipeline {
 	stages {
 		stage('Build project') {
 			steps {
-				dir("project_templates/java_project_template") {
-					sh 'gradle clean build'
-				}
+				sh 'gradle clean build'
 			}
 		}
 		stage('SonarQube Analysis') {
+			environment {
+				SONARQUBE_HOST = credentials('SONARQUBE_HOST')
+				SONARQUBE_TOKEN = credentials('SONARQUBE_TOKEN')
+			}
 			steps {
-				dir("project_templates/java_project_template") {
-					environment {
-						SONARQUBE_HOST = credentials('SONARQUBE_HOST')
-						SONARQUBE_TOKEN = credentials('SONARQUBE_TOKEN')
-					}
-					withSonarQubeEnv('sonarqube-lts') {
-						sh 'gradle sonarqube -Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_TOKEN'
-					}
+				withSonarQubeEnv('sonarqube-lts') {
+					sh 'gradle sonarqube -Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_TOKEN'
 				}
 			}
 		}
@@ -39,16 +35,14 @@ pipeline {
 				branch "master"
 			}
 			steps {
-				dir("project_templates/java_project_template") {
-					script {
-						def server = Artifactory.server "artifactory"
-						def rtGradle = Artifactory.newGradleBuild()
-						rtGradle.tool = "gradle-4.5"
-						rtGradle.deployer repo:'gradle-dev', server: server
-						rtGradle.resolver repo:'gradle-dev', server: server
-						def buildInfo = rtGradle.run buildFile: 'build.gradle', tasks: 'artifactoryPublish'
-						server.publishBuildInfo buildInfo
-					}
+				script {
+					def server = Artifactory.server "artifactory"
+					def rtGradle = Artifactory.newGradleBuild()
+					rtGradle.tool = "gradle-4.5"
+					rtGradle.deployer repo:'gradle-dev', server: server
+					rtGradle.resolver repo:'gradle-dev', server: server
+					def buildInfo = rtGradle.run buildFile: 'build.gradle', tasks: 'artifactoryPublish'
+					server.publishBuildInfo buildInfo
 				}
 			}
 		}
@@ -57,9 +51,7 @@ pipeline {
 				branch "master"
 			}
 			steps {
-				dir("project_templates/java_project_template") {
-					sh 'gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${params.CF_USERNAME} -Pcf.ccPassword=${params.CF_PASSWORD} -Pcf.org=${params.ORGANIZATION} -Pcf.space=${params.CF_SPACE}'
-				}
+				sh 'gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${params.CF_USERNAME} -Pcf.ccPassword=${params.CF_PASSWORD} -Pcf.org=${params.ORGANIZATION} -Pcf.space=${params.CF_SPACE}'
 			}
 		}
 	}
