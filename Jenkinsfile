@@ -4,10 +4,6 @@ pipeline {
 		jdk 'jdk-8u162'
 		gradle 'gradle-4.5'
 	}
-	environment {
-		CF_USERNAME = credentials('CF_USERNAME')
-		CF_PASSWORD = credentials('CF_PASSWORD')
-	}
 	parameters {
 		string(name: 'APP_NAME', defaultValue: 'track-shipments', description: 'Application name.')
 		string(name: 'CF_API', defaultValue: 'api.run.pivotal.io', description: 'API endpoint used to target a Cloud Foundry foundation.')
@@ -51,6 +47,10 @@ pipeline {
 		stage('Deploy artifact to Cloud Foundry') {
 			when {
 				branch "master"
+			}
+			environment {
+				CF_USERNAME = credentials('CF_USERNAME')
+				CF_PASSWORD = credentials('CF_PASSWORD')
 			}
 			steps {
 				sh 'gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=$CF_USERNAME -Pcf.ccPassword=$CF_PASSWORD -Pcf.org=${params.ORGANIZATION} -Pcf.space=${params.CF_SPACE}'
