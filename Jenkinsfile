@@ -54,8 +54,9 @@ pipeline {
 			steps {
 				script {
 					def artifactName = sh script: "gradle properties | grep name: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
+					def shortName = artifactName.split('_')[0]
 					def artifactVersion = sh script: "gradle properties | grep version: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
-					sh "gradle cf-push -Pcf.host=${artifactName}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${artifactName}-${artifactVersion}.jar"
+					sh "gradle cf-push -Pcf.host=${shortName}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${artifactName}-${artifactVersion}.jar"
 				}
 			}
 		}
