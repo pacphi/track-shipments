@@ -53,8 +53,10 @@ pipeline {
 				CF_PASSWORD = credentials('CF_PASSWORD')
 			}
 			steps {
-				def projectVersion = sh script: "gradle properties | grep version | cut -d': ' -f2", returnStdout: true
-				sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${APP_NAME}-${projectVersion}.jar"
+				script {
+					def projectVersion = sh script: "gradle properties | grep version | cut -d': ' -f2", returnStdout: true
+					sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${APP_NAME}-${projectVersion}.jar"
+				}
 			}
 		}
 	}
