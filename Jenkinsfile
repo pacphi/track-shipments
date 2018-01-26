@@ -53,8 +53,8 @@ pipeline {
 				CF_PASSWORD = credentials('CF_PASSWORD')
 			}
 			steps {
-				echo "cf.host: ${params.APP_NAME}-${params.CF_SPACE}, cf.ccHost: ${params.CF_API}, cf.domain: ${params.CF_DOMAIN}, cf.ccUser: ${CF_USERNAME}, cf.ccPassword: ****, cf.org: ${params.ORGANIZATION}, cf.space: ${params.CF_SPACE}"
-				sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.ORGANIZATION} -Pcf.space=${params.CF_SPACE}"
+				echo "cf.host: ${params.APP_NAME}-${params.CF_SPACE}, cf.ccHost: ${params.CF_API}, cf.domain: ${params.CF_DOMAIN}, cf.ccUser: ${CF_USERNAME}, cf.ccPassword: ****, cf.org: ${params.CF_ORGANIZATION}, cf.space: ${params.CF_SPACE}"
+				sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE}"
 			}
 		}
 	}
