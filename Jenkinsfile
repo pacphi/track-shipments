@@ -53,8 +53,8 @@ pipeline {
 				CF_PASSWORD = credentials('CF_PASSWORD')
 			}
 			steps {
-				echo "cf.host: ${params.APP_NAME}-${params.CF_SPACE}, cf.ccHost: ${params.CF_API}, cf.domain: ${params.CF_DOMAIN}, cf.ccUser: ${CF_USERNAME}, cf.ccPassword: ${CF_PASSWORD} cf.org: ${params.CF_ORGANIZATION}, cf.space: ${params.CF_SPACE}, filePath: ${WORKSPACE}/build/libs/${APP_NAME}-${project.version}.jar"
-				sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${APP_NAME}-${project.version}.jar"
+				def projectVersion = sh script: "gradle properties | grep version | awk -F': ' '{print $2}'", returnStdout: true
+				sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${APP_NAME}-${projectVersion}.jar"
 			}
 		}
 	}
