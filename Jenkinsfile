@@ -1,6 +1,9 @@
 pipeline {
 	agent {
-		node { label 'track-shipments-build' }
+		node { 
+			label 'track-shipments-build' 
+			reuseNode: true
+		}
 	}
 	tools {
 		jdk 'jdk-8u162'
