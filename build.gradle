@@ -18,7 +18,6 @@ buildscript {
 }
 
 
-
 apply plugin: 'cf-app'
 apply plugin: 'java'
 apply plugin: 'jacoco'
@@ -32,6 +31,7 @@ group = 'io.pivotal'
 version = '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
+
 gitProperties {
     dateFormat = "yyyy-MM-dd'T'HH:mmZ"
     dateFormatTimeZone = "UTC"
@@ -40,7 +40,6 @@ gitProperties {
 jacoco {
     toolVersion = "0.8.0"
 }
-
 
 jacocoTestReport {
 	reports {
@@ -54,6 +53,12 @@ check.dependsOn jacocoTestReport
 
 jar {
 	baseName 'track-shipments'
+	excludes = ['**/application.yml']
+}
+
+task execJar (type: Jar, dependsOn: jar) {
+    classifier = 'exec'
+    from sourceSets.main.output
 }
 
 sonarqube {
@@ -81,7 +86,7 @@ test {
 
 configurations {
 	all {
-    		exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+    	exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
 	}
     instrument { 
         description 'classpath for instrument as java agent' 
@@ -99,7 +104,7 @@ cfConfig {
 	//App Details
 	name = "track-shipments"
 	host = "track-shipments"
-	filePath = "${buildDir}/libs/track-shipments-${version}.jar"
+	filePath = "${buildDir}/libs/track-shipments-${version}-exec.jar"
 	path = ""
 	domain = "local.pcfdev.io"
 	instances = 1
@@ -147,6 +152,10 @@ dependencies {
 
 test { 
     jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
+}
+
+bootRepackage  {
+    withJarTask = tasks['execJar']
 }
 
 bootRun {

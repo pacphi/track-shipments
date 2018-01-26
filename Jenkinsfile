@@ -4,7 +4,6 @@ pipeline {
 	}
 	tools {
 		jdk 'jdk-8u162'
-		gradle 'gradle-4.5'
 	}
 	parameters {
 		string(name: 'CF_API', defaultValue: 'api.run.pivotal.io', description: 'API endpoint used to target a Cloud Foundry foundation.')
@@ -15,7 +14,7 @@ pipeline {
 	stages {
 		stage('Build project') {
 			steps {
-				sh 'gradle clean test bootRepackage'
+				sh './gradlew clean build'
 			}
 		}
 		stage('SonarQube Analysis') {
@@ -25,7 +24,7 @@ pipeline {
 			}
 			steps {
 				withSonarQubeEnv('sonarqube-lts') {
-					sh "gradle sonarqube -Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_TOKEN"
+					sh "./gradlew sonarqube -Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_TOKEN"
 				}
 			}
 		}
@@ -55,10 +54,10 @@ pipeline {
 			}
 			steps {
 				script {
-					def artifactName = sh script: "gradle properties | grep name: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
+					def artifactName = sh script: "./gradlew properties | grep name: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
 					def shortName = artifactName.split('_')[0]
-					def artifactVersion = sh script: "gradle properties | grep version: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
-					sh "gradle cf-push -Pcf.host=${shortName}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${shortName}-${artifactVersion}.jar"
+					def artifactVersion = sh script: "./gradlew properties | grep version: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
+					sh "./gradlew cf-push -Pcf.host=${shortName}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${shortName}-${artifactVersion}.jar"
 				}
 			}
 		}
