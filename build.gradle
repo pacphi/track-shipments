@@ -96,7 +96,7 @@ cfConfig {
 	//App Details
 	name = "track-shipments"
 	host = "track-shipments"
-	filePath = "build/libs/track-shipments-${version}.jar"
+	filePath = "${buildDir}/libs/track-shipments-${version}.jar"
 	path = ""
 	domain = "local.pcfdev.io"
 	instances = 1
