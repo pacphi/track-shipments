@@ -57,6 +57,7 @@ jar {
 }
 
 task execJar (type: Jar, dependsOn: jar) {
+	baseName 'track-shipments'
     classifier = 'exec'
     from sourceSets.main.output
 }
