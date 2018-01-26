@@ -106,7 +106,7 @@ cfConfig {
 	memory = 1024
 
 	//Env and services
-	buildpack = "https://github.com/cloudfoundry/java-buildpack/releases/#v4.8"
+	buildpack = "https://github.com/cloudfoundry/java-buildpack"
 	environment = ["JAVA_OPTS": "-Djava.security.egd=file:/dev/./urandom", "SPRING_PROFILES_ACTIVE": "cloud"]
 }
 
