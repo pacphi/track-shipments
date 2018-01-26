@@ -13,7 +13,7 @@ pipeline {
 	stages {
 		stage('Build project') {
 			steps {
-				sh 'gradle clean build'
+				sh 'gradle clean test bootRepackage'
 			}
 		}
 		stage('SonarQube Analysis') {
