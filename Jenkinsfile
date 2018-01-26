@@ -4,12 +4,16 @@ pipeline {
 		jdk 'jdk-8u162'
 		gradle 'gradle-4.5'
 	}
+	environment {
+		CF_USERNAME = credentials('CF_USERNAME')
+		CF_PASSWORD = credentials('CF_PASSWORD')
+	}
 	parameters {
 		string(name: 'APP_NAME', defaultValue: 'track-shipments', description: 'Application name.')
 		string(name: 'CF_API', defaultValue: 'api.run.pivotal.io', description: 'API endpoint used to target a Cloud Foundry foundation.')
 		string(name: 'CF_DOMAIN', defaultValue: 'cfapps.io', description: 'Applications sub-domain; APP_NAME will typically prefix this value.')
-		string(name: 'CF_USERNAME', description: 'User name of an active account.')
-		string(name: 'CF_PASSWORD', description: 'Password associated with user name; used to authenticate and authorize access to (an) organization(s) and space(s).')
+		string(name: 'CF_USERNAME', defaultValue: '$CF_USERNAME', description: 'User name of an active account.')
+		string(name: 'CF_PASSWORD', defaultValue: '$CF_PASSWORD', description: 'Password associated with user name; used to authenticate and authorize access to (an) organization(s) and space(s).')
 		string(name: 'CF_ORGANIZATION', defaultValue: 'zoo-labs', description: 'A pre-existing organization.')
 		string(name: 'CF_SPACE', defaultValue: 'test', description: 'A pre-existing space; equivalent to an environment.')
 	}
