@@ -50,8 +50,11 @@ jacocoTestReport {
     }
 }
 
-
 check.dependsOn jacocoTestReport
+
+jar {
+	baseName 'track-shipments'
+}
 
 sonarqube {
     properties {
