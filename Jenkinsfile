@@ -5,7 +5,6 @@ pipeline {
 		gradle 'gradle-4.5'
 	}
 	parameters {
-		string(name: 'APP_NAME', defaultValue: 'track-shipments', description: 'Application name.')
 		string(name: 'CF_API', defaultValue: 'api.run.pivotal.io', description: 'API endpoint used to target a Cloud Foundry foundation.')
 		string(name: 'CF_DOMAIN', defaultValue: 'cfapps.io', description: 'Applications sub-domain; APP_NAME will typically prefix this value.')
 		string(name: 'CF_ORGANIZATION', defaultValue: 'zoo-labs', description: 'A pre-existing organization.')
@@ -54,8 +53,9 @@ pipeline {
 			}
 			steps {
 				script {
-					def projectVersion = sh script: "gradle properties | grep version | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
-					sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${APP_NAME}-${projectVersion}.jar"
+					def artifactName = sh script: "gradle properties | grep name: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
+					def projectVersion = sh script: "gradle properties | grep version: | cut -d':' -f2 | tr -d '[:space:]'", returnStdout: true
+					sh "gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.CF_ORGANIZATION} -Pcf.space=${params.CF_SPACE} -PfilePath=${WORKSPACE}/build/libs/${artifactName}-${projectVersion}.jar"
 				}
 			}
 		}
