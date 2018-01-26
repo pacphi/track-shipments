@@ -53,7 +53,7 @@ pipeline {
 				CF_PASSWORD = credentials('CF_PASSWORD')
 			}
 			steps {
-				sh 'gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${env.CF_USERNAME} -Pcf.ccPassword=$CF_PASSWORD} -Pcf.org=${params.ORGANIZATION} -Pcf.space=${params.CF_SPACE}'
+				sh 'gradle cf-push -Pcf.host=${params.APP_NAME}-${params.CF_SPACE} -Pcf.ccHost=${params.CF_API} -Pcf.domain=${params.CF_DOMAIN} -Pcf.ccUser=${env.CF_USERNAME} -Pcf.ccPassword=${CF_PASSWORD} -Pcf.org=${params.ORGANIZATION} -Pcf.space=${params.CF_SPACE}'
 			}
 		}
 	}
