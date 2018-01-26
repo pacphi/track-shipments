@@ -1,5 +1,7 @@
 pipeline {
-	agent any
+	agent {
+		node { label 'track-shipments-build' }
+	}
 	tools {
 		jdk 'jdk-8u162'
 		gradle 'gradle-4.5'
