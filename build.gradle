@@ -156,7 +156,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
     
 bootJar.enabled = true
-jar.enabled = true
+jar.enabled = false
 
 tasks.idea.dependsOn(project.tasks.copySpringInstrumentJar)
 tasks.eclipse.dependsOn(project.tasks.copySpringInstrumentJar)
