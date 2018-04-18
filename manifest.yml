@@ -3,7 +3,7 @@ applications:
 - name: track-shipments
   random-route: true
   path: build/libs/track-shipments-1.0-SNAPSHOT-exec.jar
-  instances: 1
+  instances: 2
   buildpack: java_buildpack_offline
   env:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
