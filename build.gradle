@@ -1,6 +1,8 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.10.RELEASE'
+		gitPropertiesPluginVersion = '1.4.21'
+		sonarqubePluginVersion = '2.6.2'
+		springBootVersion = '2.0.1.RELEASE'
 		cfAppVersion = '2.1.0'
 	}
 	repositories {
@@ -10,8 +12,8 @@ buildscript {
 		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
-      	classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1")
-		classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.17")
+      	classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubePluginVersion}")
+		classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:${gitPropertiesPluginVersion}")
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("com.github.pivotalservices:ya-cf-app-gradle-plugin:${cfAppVersion}")
 	}
@@ -25,11 +27,11 @@ apply plugin: 'org.sonarqube'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.gorylenko.gradle-git-properties'
 
 group = 'io.pivotal'
 version = '1.0-SNAPSHOT'
-sourceCompatibility = 1.8
 
 
 gitProperties {
@@ -38,7 +40,7 @@ gitProperties {
 }
 
 jacoco {
-    toolVersion = "0.8.0"
+    toolVersion = "0.8.1"
 }
 
 jacocoTestReport {
@@ -54,12 +56,6 @@ check.dependsOn jacocoTestReport
 jar {
 	baseName 'track-shipments'
 	excludes = ['**/application.yml']
-}
-
-task execJar (type: Jar, dependsOn: jar) {
-	baseName 'track-shipments'
-    classifier = 'exec'
-    from sourceSets.main.output
 }
 
 sonarqube {
@@ -116,37 +112,23 @@ cfConfig {
 	environment = ["JAVA_OPTS": "-Djava.security.egd=file:/dev/./urandom", "SPRING_PROFILES_ACTIVE": "cloud"]
 }
 
-// vulnerability protection
-dependencyManagement {
-	dependencies {
-		dependencySet(group:'com.fasterxml.jackson.core', version: '2.8.11') {
-			entry 'jackson-annotations'
-			entry 'jackson-databind'
-		}
-		dependencySet(group: 'com.fasterxml.jackson.datatype', version: '2.8.11') {
-			entry 'jackson-datatype-jsr310'
-		}
-	}
-}
-
 dependencies {
 	compile('org.apache.commons:commons-lang3:3.7')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa') { exclude module: 'hibernate-entitymanager' }
-	compile('org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.0')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa') { exclude module: 'hibernate-core' }
+	compile('org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.1')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.data:spring-data-rest-hal-browser')
 	compile('org.springframework.boot:spring-boot-starter-hateoas')
 	compile('org.springframework.boot:spring-boot-starter-log4j2')
-	//compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('com.fasterxml.uuid:java-uuid-generator:3.1.4')
+	compile('com.fasterxml.uuid:java-uuid-generator:3.1.5')
 	compile('com.google.guava:guava:20.0')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
 	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	compileOnly('org.projectlombok:lombok')
-	instrument('org.springframework:spring-instrument')
+	instrument('org.springframework:spring-instrument:5.0.5.RELEASE')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	//testCompile('org.springframework.security:spring-security-test')
 }
@@ -155,9 +137,7 @@ test {
     jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
 }
 
-bootRepackage  {
-    withJarTask = tasks['execJar']
-}
+
 
 bootRun {
     jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
@@ -171,6 +151,12 @@ task copySpringInstrumentJar (type:Copy) {
     into("lib")
     rename { String filename -> filename = 'spring-instrument.jar' }
 }
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+    
+bootJar.enabled = true
+jar.enabled = true
 
 tasks.idea.dependsOn(project.tasks.copySpringInstrumentJar)
 tasks.eclipse.dependsOn(project.tasks.copySpringInstrumentJar)

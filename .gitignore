@@ -12,6 +12,7 @@ lib
 .project
 .settings
 .springBeans
+.sts4-cache/
 
 ### IntelliJ IDEA ###
 .idea
@@ -26,3 +27,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### VS Code ###
+.vscode/

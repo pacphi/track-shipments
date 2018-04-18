@@ -26,7 +26,7 @@ public class AddressRepositoryTest {
         Address address = repo.save(detachedAddress);
         Assert.assertNotNull("Address should have an identifier", address.getId());
         
-        Address foundAddress = repo.findOne(address.getId());
+        Address foundAddress = repo.findById(address.getId()).get();
         Assert.assertEquals(detachedAddress.getCity(), foundAddress.getCity());
         Assert.assertEquals(detachedAddress.getState(), foundAddress.getState());
         Assert.assertEquals(detachedAddress.getZip(), foundAddress.getZip());
