@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pacphi/track-shipments.svg?branch=master)](https://travis-ci.org/pacphi/track-shipments) [![Known Vulnerabilities](https://snyk.io/test/github/pacphi/track-shipments/badge.svg)](https://snyk.io/test/github/pacphi/track-shipments)
 
-This is a [Spring Boot](http://projects.spring.io/spring-boot/) application for demonstration purposes.
+This is a [Spring Boot](http://projects.spring.io/spring-boot/) application for demonstration purposes!
 
 ## Prerequisites
 
