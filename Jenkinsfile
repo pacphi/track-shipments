@@ -8,8 +8,8 @@ pipeline {
 	parameters {
 		string(name: 'CF_API', defaultValue: 'api.run.pivotal.io', description: 'API endpoint used to target a Cloud Foundry foundation.')
 		string(name: 'CF_DOMAIN', defaultValue: 'cfapps.io', description: 'Applications sub-domain; APP_NAME will typically prefix this value.')
-		string(name: 'CF_ORGANIZATION', defaultValue: 'zoo-labs', description: 'A pre-existing organization.')
-		string(name: 'CF_SPACE', defaultValue: 'test', description: 'A pre-existing space; equivalent to an environment.')
+		string(name: 'CF_ORGANIZATION', defaultValue: 'Northwest', description: 'A pre-existing organization.')
+		string(name: 'CF_SPACE', defaultValue: 'cphillipson', description: 'A pre-existing space; equivalent to an environment.')
 	}
 	stages {
 		stage('Build project') {
