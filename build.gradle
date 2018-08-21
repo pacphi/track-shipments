@@ -1,8 +1,9 @@
 buildscript {
 	ext {
+		azureVersion = '2.0.4'
 		gitPropertiesPluginVersion = '1.5.1'
 		sonarqubePluginVersion = '2.6.2'
-		springBootVersion = '2.0.3.RELEASE'
+		springBootVersion = '2.0.4.RELEASE'
 		cfAppVersion = '2.2.0'
 	}
 	repositories {
@@ -10,6 +11,7 @@ buildscript {
 		maven { url "https://oss.sonatype.org/content/repositories/releases" }
 		maven { url "https://repo.spring.io/release" }
 		maven { url "https://plugins.gradle.org/m2/" }
+		maven { url "http://clojars.org/repo/" }
 	}
 	dependencies {
       	classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubePluginVersion}")
@@ -68,6 +70,7 @@ sonarqube {
 
 repositories {
 	mavenCentral()
+	maven { url "http://clojars.org/repo/" }
 }
 
 project.tasks.withType(JavaCompile) {
@@ -112,7 +115,15 @@ cfConfig {
 	environment = ["JAVA_OPTS": "-Djava.security.egd=file:/dev/./urandom", "SPRING_PROFILES_ACTIVE": "cloud"]
 }
 
+dependencyManagement {
+	imports {
+		mavenBom "com.microsoft.azure:azure-spring-boot-bom:${azureVersion}"
+	}
+}
+
 dependencies {
+	compile('com.microsoft.azure:azure-spring-boot')
+	compile('com.microsoft.sqlserver:sqljdbc4:4.0')
 	compile('org.apache.commons:commons-lang3:3.7')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa') { exclude module: 'hibernate-core' }
