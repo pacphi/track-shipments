@@ -1,8 +1,6 @@
 
 package io.pivotal.track;
 
-import static lombok.AccessLevel.PRIVATE;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -16,14 +14,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
 @Table(name="service_level")
 @Index(name="by_token", columnNames = { "token" })
-@NoArgsConstructor(access=PRIVATE)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "token",
@@ -33,20 +26,34 @@ public class ServiceLevel implements Serializable {
     
     private final static long serialVersionUID = -4932735742032198322L;
 
+    private ServiceLevel() {}
+    
     @Id
     @Column(name="token")
-    @Getter
-    @Setter
     @JsonProperty("token")
     private String token;
     
-    @Getter
-    @Setter
     @Column(name="name")
     @JsonProperty("name")
     private String name;
     
-    public ServiceLevel withToken(String token) {
+    public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ServiceLevel withToken(String token) {
         setToken(token);
         return this;
     }

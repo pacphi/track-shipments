@@ -1,7 +1,5 @@
 package io.pivotal.track;
 
-import static lombok.AccessLevel.PACKAGE;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,10 +16,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
 public abstract class ImmutableEntity implements Persistable<UUID> {
@@ -29,15 +23,11 @@ public abstract class ImmutableEntity implements Persistable<UUID> {
     @Id
     @Column(columnDefinition="BINARY(16) NOT NULL")
     @GeneratedValue(generator="uuid-sequence")
-    @Getter
-    @Setter(PACKAGE)
     @JsonProperty(value="id", access=JsonProperty.Access.READ_ONLY)
     protected UUID id;
 
     @Basic
     @CreatedDate
-    @Getter
-    @Setter(PACKAGE)
     @JsonProperty("object_created")
     @Column(
         name = "object_created", 
@@ -53,5 +43,21 @@ public abstract class ImmutableEntity implements Persistable<UUID> {
     public ImmutableEntity(UUID id) {
         this.id = id;
     }
+
+	public UUID getId() {
+		return id;
+	}
+
+	void setId(UUID id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getObjectCreated() {
+		return objectCreated;
+	}
+
+	void setObjectCreated(LocalDateTime objectCreated) {
+		this.objectCreated = objectCreated;
+	}
 
 }

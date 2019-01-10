@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.transaction.TransactionManagerCust
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -49,7 +50,7 @@ public class EclipseLinkJpaConfiguration extends JpaBaseConfiguration implements
         baseProperties.put(PersistenceUnitProperties.TABLE_CREATION_SUFFIX, ";");
         baseProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, UUIDSequence.class.getName());
         baseProperties.put("eclipselink.weaving", "false");
-        if (environment.acceptsProfiles("debug")) {
+        if (environment.acceptsProfiles(Profiles.of("debug"))) {
             baseProperties.put(PersistenceUnitProperties.LOGGING_LEVEL, "ALL");
         }
         return newHashMap(baseProperties);

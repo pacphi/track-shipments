@@ -6,11 +6,11 @@ This is a [Spring Boot](http://projects.spring.io/spring-boot/) application for 
 
 ## Prerequisites
 
-* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8u181 or better
-* [Gradle](https://gradle.org) 4.8.1
+* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8u192 or better
+* [Gradle](https://gradle.org) 4.10.3
 	* 
-* [CF CLI](https://github.com/cloudfoundry/cli#downloads) 6.33.0 or better if you want to push the application to a Cloud Foundry (CF) instance
-* [Postman](https://www.getpostman.com) 5.5 or better to simplify interaction with API endpoints 
+* [CF CLI](https://github.com/cloudfoundry/cli#downloads) 6.41.0 or better if you want to push the application to a Cloud Foundry (CF) instance
+* [Postman](https://www.getpostman.com) 6.6.1 or better to simplify interaction with API endpoints 
 
 ## Clone
 

@@ -1,9 +1,6 @@
 
 package io.pivotal.track;
 
-import static lombok.AccessLevel.PACKAGE;
-import static lombok.AccessLevel.PRIVATE;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -22,14 +19,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
 @Table(name="tracking_status")
 @Access(AccessType.FIELD)
-@NoArgsConstructor(access=PRIVATE)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "object_created",
@@ -43,10 +35,10 @@ public class TrackingStatus extends ImmutableEntity implements Serializable {
     
     private final static long serialVersionUID = -4968320067792377712L;
 
+    private TrackingStatus() {}
+    
     @Basic
     @LastModifiedDate
-    @Getter
-    @Setter(PACKAGE)
     @JsonProperty("object_updated")
     @Column(
         name = "object_updated", 
@@ -57,27 +49,19 @@ public class TrackingStatus extends ImmutableEntity implements Serializable {
     )
     private LocalDateTime objectUpdated;
     
-    @Getter
-    @Setter
     @Column(name="status")
     @JsonProperty("status")
     private StatusEvent status;
     
     @Column(name="status_details", length=150)
-    @Getter
-    @Setter
     @JsonProperty("status_details")
     private String statusDetails;
     
-    @Getter
-    @Setter
     @Column(name="status_date")
     @JsonProperty("status_date")
     private LocalDateTime statusDate;
     
     @ManyToOne
-    @Getter
-    @Setter
     @JsonProperty("location")
     private Address location;
     
@@ -87,7 +71,47 @@ public class TrackingStatus extends ImmutableEntity implements Serializable {
         return true;
     }
     
-    public TrackingStatus withStatus(StatusEvent status) {
+    public LocalDateTime getObjectUpdated() {
+		return objectUpdated;
+	}
+
+	void setObjectUpdated(LocalDateTime objectUpdated) {
+		this.objectUpdated = objectUpdated;
+	}
+
+	public StatusEvent getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusEvent status) {
+		this.status = status;
+	}
+
+	public String getStatusDetails() {
+		return statusDetails;
+	}
+
+	public void setStatusDetails(String statusDetails) {
+		this.statusDetails = statusDetails;
+	}
+
+	public LocalDateTime getStatusDate() {
+		return statusDate;
+	}
+
+	public void setStatusDate(LocalDateTime statusDate) {
+		this.statusDate = statusDate;
+	}
+
+	public Address getLocation() {
+		return location;
+	}
+
+	public void setLocation(Address location) {
+		this.location = location;
+	}
+
+	public TrackingStatus withStatus(StatusEvent status) {
         setStatus(status);
         return this;
     }

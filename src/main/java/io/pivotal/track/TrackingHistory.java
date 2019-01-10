@@ -1,8 +1,6 @@
 
 package io.pivotal.track;
 
-import static lombok.AccessLevel.PRIVATE;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -18,14 +16,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
 @Table(name="tracking_history")
 @Access(AccessType.FIELD)
-@NoArgsConstructor(access=PRIVATE)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "object_created",
@@ -38,31 +31,57 @@ public class TrackingHistory extends ImmutableEntity implements Serializable {
     
     private final static long serialVersionUID = 4087756947407007397L;
     
+    private TrackingHistory() {}
+    
     @Column(name="status")
-    @Getter
-    @Setter
     @JsonProperty("status")
     private StatusEvent status;
     
     @Column(name="status_details", length=500)
-    @Getter
-    @Setter
     @JsonProperty("status_details")
     private String statusDetails;
     
     @Column(name="status_date")
-    @Getter
-    @Setter
     @JsonProperty("status_date")
     private LocalDateTime statusDate;
     
     @ManyToOne
-    @Getter
-    @Setter
     @JsonProperty("location")
     private Address location;
+ 
+    public StatusEvent getStatus() {
+		return status;
+	}
 
-    @JsonIgnore
+	public void setStatus(StatusEvent status) {
+		this.status = status;
+	}
+
+	public String getStatusDetails() {
+		return statusDetails;
+	}
+
+	public void setStatusDetails(String statusDetails) {
+		this.statusDetails = statusDetails;
+	}
+
+	public LocalDateTime getStatusDate() {
+		return statusDate;
+	}
+
+	public void setStatusDate(LocalDateTime statusDate) {
+		this.statusDate = statusDate;
+	}
+
+	public Address getLocation() {
+		return location;
+	}
+
+	public void setLocation(Address location) {
+		this.location = location;
+	}
+
+	@JsonIgnore
     @Override
     public boolean isNew() {
         return true;
