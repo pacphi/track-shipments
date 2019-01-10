@@ -1,4 +1,4 @@
-FROM gradle:4.8.1-jdk10 as BUILD
+FROM gradle:4.10.3-jdk11-slim as BUILD
 
 COPY . /app
 
@@ -10,7 +10,7 @@ USER gradle
 RUN gradle -b /app/build.gradle clean build -s
 
 
-FROM openjdk:10-jre
+FROM openjdk:11-jre-slim
 ENV PORT 8080
 EXPOSE 8080
 WORKDIR /opt
