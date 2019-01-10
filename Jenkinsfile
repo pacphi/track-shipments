@@ -8,8 +8,8 @@ pipeline {
 	parameters {
 		string(name: 'CF_API', defaultValue: 'api.run.pivotal.io', description: 'API endpoint used to target a Cloud Foundry foundation.')
 		string(name: 'CF_DOMAIN', defaultValue: 'cfapps.io', description: 'Applications sub-domain; APP_NAME will typically prefix this value.')
-		string(name: 'CF_ORGANIZATION', defaultValue: 'zoo-labs', description: 'A pre-existing organization.')
-		string(name: 'CF_SPACE', defaultValue: 'test', description: 'A pre-existing space; equivalent to an environment.')
+		string(name: 'CF_ORGANIZATION', defaultValue: 'Northwest', description: 'A pre-existing organization.')
+		string(name: 'CF_SPACE', defaultValue: 'cphillipson', description: 'A pre-existing space; equivalent to an environment.')
 	}
 	stages {
 		stage('Build project') {
@@ -36,7 +36,7 @@ pipeline {
 				script {
 					def server = Artifactory.server "artifactory"
 					def rtGradle = Artifactory.newGradleBuild()
-					rtGradle.tool = "gradle-4.5"
+					rtGradle.tool = "gradle-4.8.1"
 					rtGradle.deployer repo:'gradle-dev', server: server
 					rtGradle.resolver repo:'gradle-dev', server: server
 					def buildInfo = rtGradle.run buildFile: 'build.gradle', tasks: 'artifactoryPublish'
