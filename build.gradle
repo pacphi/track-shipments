@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		azureVersion = '2.0.4'
+		azureVersion = '2.1.7'
 		gitPropertiesPluginVersion = '2.0.0'
 		sonarqubePluginVersion = '2.7'
 		springBootVersion = '2.1.4.RELEASE'
