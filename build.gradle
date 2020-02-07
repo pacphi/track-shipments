@@ -133,7 +133,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-hateoas')
 	compile('org.springframework.boot:spring-boot-starter-log4j2')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('com.fasterxml.uuid:java-uuid-generator:3.2.0')
+	compile('com.fasterxml.uuid:java-uuid-generator:3.3.0')
 	compile('com.google.guava:guava:25.1-jre')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
