@@ -137,7 +137,7 @@ dependencies {
 	compile('com.google.guava:guava:25.1-jre')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
-	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8')
+	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0')
 	instrument('org.springframework:spring-instrument:5.1.6.RELEASE')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
