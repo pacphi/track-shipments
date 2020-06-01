@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		azureVersion = '2.0.4'
 		gitPropertiesPluginVersion = '2.0.0'
-		sonarqubePluginVersion = '2.7'
+		sonarqubePluginVersion = '3.0'
 		springBootVersion = '2.1.4.RELEASE'
 		cfAppVersion = '2.3.0-rc.2'
 	}
