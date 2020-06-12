@@ -3,7 +3,7 @@ buildscript {
 		azureVersion = '2.0.4'
 		gitPropertiesPluginVersion = '2.0.0'
 		sonarqubePluginVersion = '2.7'
-		springBootVersion = '2.1.4.RELEASE'
+		springBootVersion = '2.3.1.RELEASE'
 		cfAppVersion = '2.3.0-rc.2'
 	}
 	repositories {
