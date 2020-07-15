@@ -177,7 +177,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-hateoas')
 	implementation('org.springframework.boot:spring-boot-starter-log4j2')
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	implementation('com.fasterxml.uuid:java-uuid-generator:3.2.0')
+	implementation('com.fasterxml.uuid:java-uuid-generator:4.0.1')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
 	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1')
