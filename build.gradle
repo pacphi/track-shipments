@@ -1,59 +1,128 @@
-buildscript {
-	ext {
-		azureVersion = '2.0.4'
-		gitPropertiesPluginVersion = '2.0.0'
-		sonarqubePluginVersion = '2.7'
-		springBootVersion = '2.1.4.RELEASE'
-		cfAppVersion = '2.3.0-rc.2'
-	}
-	repositories {
-		mavenCentral()
-		maven { url "https://oss.sonatype.org/content/repositories/releases" }
-		maven { url "https://repo.spring.io/release" }
-		maven { url "https://plugins.gradle.org/m2/" }
-		maven { url "http://clojars.org/repo/" }
-	}
-	dependencies {
-      	classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubePluginVersion}")
-		classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:${gitPropertiesPluginVersion}")
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("com.github.pivotalservices:ya-cf-app-gradle-plugin:${cfAppVersion}")
-	}
+plugins {
+    id 'com.gorylenko.gradle-git-properties' version '2.2.2'
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'com.github.ben-manes.versions' version '0.28.0'
+	id 'eclipse'
+	id 'idea'
+	id 'java'
+    id 'jacoco'
+    id 'com.google.cloud.tools.jib' version '2.4.0'
+    id 'com.github.spotbugs' version '4.4.4'
+    id 'info.solidsoft.pitest' version '1.5.1'
+    id "org.sonarqube" version "3.0"
+	id "com.github.pivotalservices.cf-app" version "2.3.0-rc.8"
 }
-
-
-apply plugin: 'cf-app'
-apply plugin: 'java'
-apply plugin: 'jacoco'
-apply plugin: 'org.sonarqube'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.gorylenko.gradle-git-properties'
-
-group = 'io.pivotal'
-version = '1.0-SNAPSHOT'
-
 
 gitProperties {
     dateFormat = "yyyy-MM-dd'T'HH:mmZ"
     dateFormatTimeZone = "UTC"
 }
 
+spotbugs {
+    toolVersion = '4.0.3'
+    ignoreFailures = true
+    effort = 'max'
+    reportLevel = 'low'
+    showProgress = true
+}
+
+spotbugsMain {
+    reports {
+        html {
+            enabled = true
+            destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+        }
+        xml {
+            enabled = true
+            destination = file("$buildDir/reports/spotbugs/main/spotbugs.xml")
+        }
+    }
+}
+
+group = 'io.pivotal'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+
+repositories {
+	mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+    maven { url "https://jitpack.io" }
+	maven { url "http://clojars.org/repo/" }
+}
+
+configurations {
+	all {
+    	exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+	}
+	runtimeAgent
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.microsoft.azure:azure-spring-boot-bom:2.3.2"
+	}
+}
+
+bootRun {
+    // support passing -Dsystem.property=value to bootRun task
+    systemProperties = System.properties
+	doFirst {
+		// Ensure that all of the agents we need to load at run-time happen when running the app through
+		// Gradle
+		configurations.runtimeAgent.each {
+			File jarFile ->
+				jvmArgs "-javaagent:${jarFile.absolutePath}"
+		}
+    }
+}
+
+test {
+	doFirst {
+		// Ensure that all of the agents we need to load at run-time happen when running the app through
+		// Gradle
+		configurations.runtimeAgent.each {
+			File jarFile ->
+				jvmArgs "-javaagent:${jarFile.absolutePath}"
+		}
+    }
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showCauses true
+        showExceptions true
+        showStackTraces true
+	}
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 jacoco {
-    toolVersion = "0.8.2"
+	toolVersion = "0.8.5"
 }
 
 jacocoTestReport {
 	reports {
-	    xml.enabled = true
-	    html.enabled = true
-	    csv.enabled = false
-    }
+		xml.enabled = true
+		html.enabled = true
+		csv.enabled = false
+	}
 }
 
-check.dependsOn jacocoTestReport
+pitest {
+    testPlugin = "junit5"
+    jvmArgs = ['-Xmx1024m']
+    threads = 5
+    targetClasses = ['io.pivotal.cfapp.*']
+    outputFormats = ['XML', 'HTML']
+}
 
 jar {
 	baseName 'track-shipments'
@@ -68,31 +137,6 @@ sonarqube {
     }
 }
 
-repositories {
-	mavenCentral()
-	maven { url "http://clojars.org/repo/" }
-}
-
-project.tasks.withType(JavaCompile) {
-    options.fork = true
-    options.compilerArgs << '-parameters'
-}
-
-test {
-    testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
-    }
-}
-
-configurations {
-	all {
-    	exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-	}
-    instrument { 
-        description 'classpath for instrument as java agent' 
-    }
-}
-
 cfConfig {
 	//CF Details
 	ccHost = "api.local.pcfdev.io"
@@ -104,7 +148,7 @@ cfConfig {
 	//App Details
 	name = "track-shipments"
 	host = "track-shipments"
-	filePath = "${buildDir}/libs/track-shipments-${version}-exec.jar"
+	filePath = "${buildDir}/libs/track-shipments-${version}.jar"
 	path = ""
 	domain = "local.pcfdev.io"
 	instances = 1
@@ -115,58 +159,42 @@ cfConfig {
 	environment = ["JAVA_OPTS": "-Djava.security.egd=file:/dev/./urandom", "SPRING_PROFILES_ACTIVE": "cloud"]
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "com.microsoft.azure:azure-spring-boot-bom:${azureVersion}"
-	}
-}
-
 dependencies {
-	compile('com.microsoft.azure:azure-spring-boot')
-	compile('com.microsoft.sqlserver:sqljdbc4:4.0')
-	compile('org.apache.commons:commons-lang3:3.9')
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa') { exclude module: 'hibernate-core' }
-	compile('org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.4')
-	compile('org.springframework.boot:spring-boot-starter-data-rest')
-	compile('org.springframework.data:spring-data-rest-hal-browser')
-	compile('org.springframework.boot:spring-boot-starter-hateoas')
-	compile('org.springframework.boot:spring-boot-starter-log4j2')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('com.fasterxml.uuid:java-uuid-generator:3.2.0')
-	compile('com.google.guava:guava:25.1-jre')
+	// Required top-level dependency to support AOP and the AspectJ Transformer in Spring, even
+    // when using Load-Time Weaving (LTW).
+    implementation "org.springframework.boot:spring-boot-starter-aop"
+	implementation('com.microsoft.azure:azure-spring-boot')
+	implementation('com.microsoft.sqlserver:sqljdbc4:4.0')
+	implementation('org.apache.commons:commons-lang3:3.9')
+	implementation('org.springframework.boot:spring-boot-starter-actuator')
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa') { 
+		exclude group: 'org.hibernate', module: 'hibernate-core'
+		exclude group: 'org.hibernate', module: 'hibernate-entitymanager' 
+	}
+	implementation('org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.7')
+	implementation('org.springframework.boot:spring-boot-starter-data-rest')
+	implementation('org.springframework.data:spring-data-rest-hal-browser')
+	implementation('org.springframework.boot:spring-boot-starter-hateoas')
+	implementation('org.springframework.boot:spring-boot-starter-log4j2')
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('com.fasterxml.uuid:java-uuid-generator:3.2.0')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
-	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8')
-	instrument('org.springframework:spring-instrument:5.1.6.RELEASE')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1')
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	    exclude group: 'junit', module: 'junit'
+    }
+    testImplementation('org.pitest:pitest-junit5-plugin:0.12')
+	
+	// BEGIN: Required for LTW to work when the application is run via the "test" or bootRun" Gradle
+    //        tasks.
+    runtimeAgent "org.springframework:spring-instrument"
+    // END
+	
 }
 
-test { 
-    jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
+project.tasks.withType(JavaCompile) {
+    options.fork = true
+    options.compilerArgs << '-parameters'
 }
-
-
-
-bootRun {
-    jvmArgs "-javaagent:$project.configurations.instrument.singleFile"
-    systemProperties = System.properties
-}
-
-task copySpringInstrumentJar (type:Copy) {
-    description = 'Copies the spring-instrument.jar into your lib directory.'
-    outputs.file project.file('lib/spring-instrument.jar')
-    from (project.configurations.instrument)
-    into("lib")
-    rename { String filename -> filename = 'spring-instrument.jar' }
-}
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-    
-bootJar.enabled = true
-jar.enabled = false
-
-tasks.idea.dependsOn(project.tasks.copySpringInstrumentJar)
-tasks.eclipse.dependsOn(project.tasks.copySpringInstrumentJar)
-tasks.processResources.dependsOn(project.tasks.copySpringInstrumentJar)

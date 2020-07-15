@@ -1,14 +1,14 @@
 package io.pivotal.track;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class AddressRepositoryTest {
 
     @Autowired
@@ -24,13 +24,13 @@ public class AddressRepositoryTest {
                 .withCountry("USA");
         
         Address address = repo.save(detachedAddress);
-        Assert.assertNotNull("Address should have an identifier", address.getId());
+        Assertions.assertNotNull(address.getId());
         
         Address foundAddress = repo.findById(address.getId()).get();
-        Assert.assertEquals(detachedAddress.getCity(), foundAddress.getCity());
-        Assert.assertEquals(detachedAddress.getState(), foundAddress.getState());
-        Assert.assertEquals(detachedAddress.getZip(), foundAddress.getZip());
-        Assert.assertEquals(detachedAddress.getCountry(), foundAddress.getCountry());
+        Assertions.assertEquals(detachedAddress.getCity(), foundAddress.getCity());
+        Assertions.assertEquals(detachedAddress.getState(), foundAddress.getState());
+        Assertions.assertEquals(detachedAddress.getZip(), foundAddress.getZip());
+        Assertions.assertEquals(detachedAddress.getCountry(), foundAddress.getCountry());
     }
 
 }

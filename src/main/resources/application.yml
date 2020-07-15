@@ -19,8 +19,15 @@ logging:
     org.springframework.orm.jpa: DEBUG
     
 management:
-  security:
-    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: info,health,metrics,scheduledtasks,loggers,prometheus
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
   info:
     git:
       mode: full

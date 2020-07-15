@@ -1,4 +1,4 @@
-FROM gradle:4.10.3-jdk11-slim as BUILD
+FROM gradle:6.5.1-jdk11 as BUILD
 
 COPY . /app
 

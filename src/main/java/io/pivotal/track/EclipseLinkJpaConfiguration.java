@@ -1,7 +1,5 @@
 package io.pivotal.track;
 
-import static com.google.common.collect.Maps.newHashMap;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
-import org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -32,11 +29,10 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 public class EclipseLinkJpaConfiguration extends JpaBaseConfiguration implements EnvironmentAware {
 
     private Environment environment;
-    
+
     protected EclipseLinkJpaConfiguration(DataSource dataSource, JpaProperties properties,
-            ObjectProvider<JtaTransactionManager> jtaTransactionManager,
-            ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
-        super(dataSource, properties, jtaTransactionManager, transactionManagerCustomizers);
+            ObjectProvider<JtaTransactionManager> jtaTransactionManager) {
+        super(dataSource, properties, jtaTransactionManager);
     }
 
     @Override
@@ -49,11 +45,12 @@ public class EclipseLinkJpaConfiguration extends JpaBaseConfiguration implements
         final Map<String, Object> baseProperties = new HashMap<>();
         baseProperties.put(PersistenceUnitProperties.TABLE_CREATION_SUFFIX, ";");
         baseProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, UUIDSequence.class.getName());
-        baseProperties.put("eclipselink.weaving", "false");
+        baseProperties.put(PersistenceUnitProperties.WEAVING, "true");
+	    baseProperties.put(PersistenceUnitProperties.DDL_GENERATION, "drop-and-create-tables");
         if (environment.acceptsProfiles(Profiles.of("debug"))) {
             baseProperties.put(PersistenceUnitProperties.LOGGING_LEVEL, "ALL");
         }
-        return newHashMap(baseProperties);
+        return Map.copyOf(baseProperties);
     }
 
     @Override
