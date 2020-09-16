@@ -63,7 +63,7 @@ configurations {
 
 dependencyManagement {
 	imports {
-		mavenBom "com.microsoft.azure:azure-spring-boot-bom:2.3.3"
+		mavenBom "com.microsoft.azure:azure-spring-boot-bom:2.3.5"
 	}
 }
 
