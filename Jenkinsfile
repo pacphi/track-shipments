@@ -36,7 +36,7 @@ pipeline {
 				script {
 					def server = Artifactory.server "artifactory"
 					def rtGradle = Artifactory.newGradleBuild()
-					rtGradle.tool = "gradle-6.5.1"
+					rtGradle.tool = "gradle-6.6.1"
 					rtGradle.deployer repo:'gradle-dev', server: server
 					rtGradle.resolver repo:'gradle-dev', server: server
 					def buildInfo = rtGradle.run buildFile: 'build.gradle', tasks: 'artifactoryPublish'
