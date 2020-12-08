@@ -171,7 +171,7 @@ dependencies {
 		exclude group: 'org.hibernate', module: 'hibernate-core'
 		exclude group: 'org.hibernate', module: 'hibernate-entitymanager' 
 	}
-	implementation('org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.7')
+	implementation('org.eclipse.persistence:org.eclipse.persistence.jpa:3.0.0')
 	implementation('org.springframework.boot:spring-boot-starter-data-rest')
 	implementation('org.springframework.data:spring-data-rest-hal-browser')
 	implementation('org.springframework.boot:spring-boot-starter-hateoas')
