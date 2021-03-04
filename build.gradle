@@ -180,7 +180,7 @@ dependencies {
 	implementation('com.fasterxml.uuid:java-uuid-generator:4.0.1')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
-	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.1')
+	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.2')
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	    exclude group: 'junit', module: 'junit'
