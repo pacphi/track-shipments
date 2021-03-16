@@ -1,15 +1,15 @@
 plugins {
     id 'com.gorylenko.gradle-git-properties' version '2.2.4'
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'com.github.ben-manes.versions' version '0.36.0'
+    id 'com.github.ben-manes.versions' version '0.38.0'
 	id 'eclipse'
 	id 'idea'
 	id 'java'
     id 'jacoco'
-    id 'com.google.cloud.tools.jib' version '2.7.1'
-    id 'com.github.spotbugs' version '4.6.0'
-    id 'info.solidsoft.pitest' version '1.5.2'
+    id 'com.google.cloud.tools.jib' version '2.8.0'
+    id 'com.github.spotbugs' version '4.7.0'
+    id 'info.solidsoft.pitest' version '1.6.0'
     id "org.sonarqube" version "3.0"
 	id "com.github.pivotalservices.cf-app" version "2.3.0-rc.8"
 }
@@ -20,7 +20,7 @@ gitProperties {
 }
 
 spotbugs {
-    toolVersion = '4.0.3'
+    toolVersion = '4.2.1'
     ignoreFailures = true
     effort = 'max'
     reportLevel = 'low'
@@ -180,7 +180,7 @@ dependencies {
 	implementation('com.fasterxml.uuid:java-uuid-generator:4.0.1')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
-	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.1')
+	runtime('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.2')
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	    exclude group: 'junit', module: 'junit'
