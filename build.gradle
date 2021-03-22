@@ -185,7 +185,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	    exclude group: 'junit', module: 'junit'
     }
-    testImplementation('org.pitest:pitest-junit5-plugin:0.12')
+    testImplementation('org.pitest:pitest-junit5-plugin:0.14')
 	
 	// BEGIN: Required for LTW to work when the application is run via the "test" or bootRun" Gradle
     //        tasks.
