@@ -1,0 +1,35 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.springframework.boot
+    versions:
+    - 2.4.3
+    - 2.4.4
+  - dependency-name: com.github.spotbugs
+    versions:
+    - 4.6.2
+    - 4.7.0
+  - dependency-name: info.solidsoft.pitest
+    versions:
+    - 1.6.0
+  - dependency-name: com.github.ben-manes.versions
+    versions:
+    - 0.38.0
+  - dependency-name: com.fasterxml.jackson.datatype:jackson-datatype-jsr310
+    versions:
+    - 2.12.2
+  - dependency-name: com.google.cloud.tools.jib
+    versions:
+    - 2.8.0
+  - dependency-name: org.eclipse.persistence:org.eclipse.persistence.jpa
+    versions:
+    - 3.0.0
+  - dependency-name: org.apache.commons:commons-lang3
+    versions:
+    - "3.11"
