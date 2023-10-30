@@ -52,9 +52,6 @@ repositories {
 }
 
 configurations {
-	all {
-    	exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-	}
 	runtimeAgent
 }
 
@@ -163,7 +160,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.fasterxml.uuid:java-uuid-generator:4.3.0'
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
