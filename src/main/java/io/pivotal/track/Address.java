@@ -3,11 +3,11 @@ package io.pivotal.track;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
@@ -33,37 +33,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "country"
 })
 public class Address implements Serializable {
-    
+
     private final static long serialVersionUID = 6925266306494607412L;
 
     private Address() {}
-    
+
     @Id
     @Column(name="id")
     @GeneratedValue
     @JsonProperty(value="id", access=JsonProperty.Access.READ_ONLY)
     private Long id;
-    
+
     @Column(name="streetAddress",length=250)
     @JsonProperty("streetAddress")
     private String streetAddress;
-    
+
     @Column(name="city",length=50)
     @JsonProperty("city")
     private String city;
-    
+
     @Column(name="state", length=50)
     @JsonProperty("state")
     private String state;
-    
+
     @Column(name="zip", length=12)
     @JsonProperty("zip")
     private String zip;
-    
+
     @Column(name="country", length=75)
     @JsonProperty("country")
     private String country;
-    
+
     public Long getId() {
 		return id;
 	}
@@ -116,17 +116,17 @@ public class Address implements Serializable {
         setStreetAddress(streetAddress);
         return this;
     }
-    
+
     public Address withCity(String city) {
         setCity(city);
         return this;
     }
-    
+
     public Address withState(String state) {
         setState(state);
         return this;
     }
-    
+
     public Address withZip(String zip) {
         setZip(zip);
         return this;
@@ -136,7 +136,7 @@ public class Address implements Serializable {
         setCountry(country);
         return this;
     }
-    
+
     public static Address create() {
         return new Address();
     }

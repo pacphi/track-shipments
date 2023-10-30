@@ -6,11 +6,10 @@ This is a [Spring Boot](http://projects.spring.io/spring-boot/) application for 
 
 ## Prerequisites
 
-* Java [AdoptOpenJDK](https://adoptopenjdk.net/) 11.0.7 or better
-* [Gradle](https://gradle.org) 6.8.2
-	* 
+* Java [AdoptOpenJDK](https://adoptopenjdk.net/) 17 or better
+* [Gradle](https://gradle.org) 8.4
 * [CF CLI](https://github.com/cloudfoundry/cli#downloads) 6.51.0 or better if you want to push the application to a Cloud Foundry (CF) instance
-* [Postman](https://www.getpostman.com) 7.28.0 or better to simplify interaction with API endpoints 
+* [Postman](https://www.getpostman.com) 10.18 or better to simplify interaction with API endpoints
 
 ## Clone
 
@@ -101,7 +100,7 @@ Found in the `/scripts` directory
 | deploy-to-multiple-environments.sh | Executes a gradle cf-push with an account to org and spaces (as configured). |
 | deploy-to-staging.sh  | Executes a gradle cf-push with an account to staging environment (org/space).   |
 
- 
+
 ## Load testing
 
 1. Sign up for an account on [loader.io](https://loader.io).

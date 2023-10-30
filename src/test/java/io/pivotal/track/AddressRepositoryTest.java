@@ -1,19 +1,19 @@
 package io.pivotal.track;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@SpringBootTest
+@DataJpaTest
 @ExtendWith(SpringExtension.class)
 public class AddressRepositoryTest {
 
     @Autowired
     private AddressRepository repo;
-    
+
     @Test
     public void testThatAddressMayBeSavedThenFoundById() {
         Address detachedAddress = Address
@@ -22,10 +22,10 @@ public class AddressRepositoryTest {
                 .withState("WA")
                 .withZip("98012")
                 .withCountry("USA");
-        
+
         Address address = repo.save(detachedAddress);
         Assertions.assertNotNull(address.getId());
-        
+
         Address foundAddress = repo.findById(address.getId()).get();
         Assertions.assertEquals(detachedAddress.getCity(), foundAddress.getCity());
         Assertions.assertEquals(detachedAddress.getState(), foundAddress.getState());

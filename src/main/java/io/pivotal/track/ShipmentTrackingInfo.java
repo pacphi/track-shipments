@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
 
@@ -42,39 +42,39 @@ public class ShipmentTrackingInfo implements Serializable {
     @ElementCollection
     @JsonProperty("messages")
     private Set<String> messages = new HashSet<>();
-    
+
     @Column(name="carrier")
     @JsonProperty("carrier")
     private String carrier;
-    
+
     @Id
     @Column(name="tracking_number", length=20)
     @JsonProperty("tracking_number")
     private String trackingNumber;
-    
+
     @ManyToOne
     @JsonProperty("address_from")
     private Address addressFrom;
-    
+
     @ManyToOne
     @JsonProperty("address_to")
     private Address addressTo;
-    
+
     @Column(name="eta")
     @JsonProperty("eta")
     private LocalDateTime eta;
-    
+
     @Column(name="original_eta")
     @JsonProperty("original_eta")
     private LocalDateTime originalEta;
-    
+
     @JsonProperty("service_level")
     private ServiceLevel serviceLevel;
-    
+
     @Column(name="metadata")
     @JsonProperty("metadata")
     private String metadata;
-    
+
     @ManyToOne
     @JsonProperty("tracking_status")
     private TrackingStatus trackingStatus;

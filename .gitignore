@@ -31,3 +31,6 @@ nbdist/
 ### VS Code ###
 .vscode/
 .history/
+
+# AJC
+*.txt

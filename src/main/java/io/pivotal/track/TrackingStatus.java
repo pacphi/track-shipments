@@ -4,13 +4,13 @@ package io.pivotal.track;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -32,45 +32,45 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "location"
 })
 public class TrackingStatus extends ImmutableEntity implements Serializable {
-    
+
     private final static long serialVersionUID = -4968320067792377712L;
 
     private TrackingStatus() {}
-    
+
     @Basic
     @LastModifiedDate
     @JsonProperty("object_updated")
     @Column(
-        name = "object_updated", 
-        nullable = false, 
-        insertable = true, 
-        updatable = true, 
+        name = "object_updated",
+        nullable = false,
+        insertable = true,
+        updatable = true,
         columnDefinition = "TIMESTAMP NOT NULL"
     )
     private LocalDateTime objectUpdated;
-    
+
     @Column(name="status")
     @JsonProperty("status")
     private StatusEvent status;
-    
+
     @Column(name="status_details", length=150)
     @JsonProperty("status_details")
     private String statusDetails;
-    
+
     @Column(name="status_date")
     @JsonProperty("status_date")
     private LocalDateTime statusDate;
-    
+
     @ManyToOne
     @JsonProperty("location")
     private Address location;
-    
+
     @JsonIgnore
     @Override
     public boolean isNew() {
         return true;
     }
-    
+
     public LocalDateTime getObjectUpdated() {
 		return objectUpdated;
 	}
@@ -115,17 +115,17 @@ public class TrackingStatus extends ImmutableEntity implements Serializable {
         setStatus(status);
         return this;
     }
-    
+
     public TrackingStatus withStatusDetails(String statusDetails) {
         setStatusDetails(statusDetails);
         return this;
     }
-    
+
     public TrackingStatus withLocation(Address location) {
         setLocation(location);
         return this;
     }
-    
+
     public static TrackingStatus create() {
         return new TrackingStatus();
     }
