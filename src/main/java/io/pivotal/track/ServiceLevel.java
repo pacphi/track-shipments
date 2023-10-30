@@ -3,10 +3,10 @@ package io.pivotal.track;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
 
@@ -23,20 +23,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "name"
 })
 public class ServiceLevel implements Serializable {
-    
+
     private final static long serialVersionUID = -4932735742032198322L;
 
     private ServiceLevel() {}
-    
+
     @Id
     @Column(name="token")
     @JsonProperty("token")
     private String token;
-    
+
     @Column(name="name")
     @JsonProperty("name")
     private String name;
-    
+
     public String getToken() {
 		return token;
 	}
@@ -57,12 +57,12 @@ public class ServiceLevel implements Serializable {
         setToken(token);
         return this;
     }
-    
+
     public ServiceLevel withName(String name) {
         setName(name);
         return this;
     }
-    
+
     public static ServiceLevel create() {
         return new ServiceLevel();
     }

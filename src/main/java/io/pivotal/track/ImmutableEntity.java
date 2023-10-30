@@ -3,12 +3,12 @@ package io.pivotal.track;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Persistable;
@@ -30,10 +30,10 @@ public abstract class ImmutableEntity implements Persistable<UUID> {
     @CreatedDate
     @JsonProperty("object_created")
     @Column(
-        name = "object_created", 
-        nullable = false, 
-        insertable = true, 
-        updatable = false, 
+        name = "object_created",
+        nullable = false,
+        insertable = true,
+        updatable = false,
         columnDefinition = "TIMESTAMP NOT NULL"
     )
     private LocalDateTime objectCreated;

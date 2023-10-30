@@ -20,11 +20,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.vendor.AbstractJpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.transaction.jta.JtaTransactionManager;
-
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
 
 @Configuration
 @EnableJpaRepositories
 @EnableJpaAuditing
+@EnableLoadTimeWeaving
 @EntityScan(basePackageClasses={TrackShipmentsMvpApplication.class, Jsr310Converters.class})
 public class EclipseLinkJpaConfiguration extends JpaBaseConfiguration implements EnvironmentAware {
 

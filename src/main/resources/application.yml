@@ -12,12 +12,12 @@ spring:
   h2:
     console:
       enabled: true
-      
+
 logging:
   level:
     org.springframework.transaction: DEBUG
     org.springframework.orm.jpa: DEBUG
-    
+
 management:
   endpoints:
     web:

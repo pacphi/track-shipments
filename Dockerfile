@@ -1,4 +1,4 @@
-FROM gradle:6.8.2-jdk11 as BUILD
+FROM gradle:8.4-jdk17 as BUILD
 
 COPY . /app
 
@@ -10,7 +10,7 @@ USER gradle
 RUN gradle -b /app/build.gradle clean build -s
 
 
-FROM openjdk:11-jre-slim
+FROM bellsoft/liberica-openjre-alpine:17
 ENV PORT 8080
 EXPOSE 8080
 WORKDIR /opt
