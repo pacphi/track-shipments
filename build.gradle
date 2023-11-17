@@ -149,7 +149,7 @@ dependencies {
     // when using Load-Time Weaving (LTW).
     implementation "org.springframework.boot:spring-boot-starter-aop"
 	implementation 'com.microsoft.azure:azure-spring-boot'
-	implementation 'com.microsoft.sqlserver:mssql-jdbc:12.4.2.jre11'
+	implementation 'com.microsoft.sqlserver:mssql-jdbc:12.5.0.jre11-preview'
 	implementation 'org.apache.commons:commons-lang3:3.13.0'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation ('org.springframework.boot:spring-boot-starter-data-jpa') {
